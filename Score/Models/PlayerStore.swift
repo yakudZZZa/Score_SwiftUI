@@ -12,18 +12,6 @@ import Combine
 class PlayerStore: ObservableObject {
     
     var choosedColorsIndexes: [Int] = colors.indices.map{ $0 }
-    //  static let colors: [Color] = [
-    //    Color(red: 23, green: 132, blue: 67),
-    //    Color(red: 0, green: 137, blue: 129),
-    //    Color(red: 62, green: 132, blue: 205),
-    //    Color(red: 83, green: 98, blue: 236),
-    //    Color(red: 157, green: 61, blue: 182),
-    //    Color(red: 186, green: 45, blue: 92),
-    //    Color(red: 210, green: 60, blue: 60),
-    //    Color(red: 216, green: 106, blue: 58),
-    //    Color(red: 233, green: 155, blue: 5),
-    //    Color(red: 103, green: 103, blue: 103)
-    //  ]
     
     @Published var players: [Player] = []
     
@@ -68,20 +56,4 @@ class PlayerStore: ObservableObject {
     func addNewPlayer() {
         self.players.append(Player(score: 0, selectedColorIndex: chooseRandomColorIndex()))
     }
-    //  func addPlayer() {
-    //    players.append(Player(backgroundColor: PlayerStore.colors.randomElement()!))
-    //  }
-    //
-    //  static func getRandomColor() -> CGColor {
-    //    guard let randomElement = self.colors.randomElement() else { fatalError() }
-    //    return randomElement
-    //  }
 }
-
-//var testData: [Player] = [
-//    Player(backgroundColor: colors.randomElement()!),
-//    Player(name: "Александра", backgroundColor: colors.randomElement()!),
-//    Player(name: "Евгений", backgroundColor: colors.randomElement()!),
-//    Player(name: "Алиса", backgroundColor: colors.randomElement()!),
-//    Player(name: "Сергей", backgroundColor: colors.randomElement()!)
-//]

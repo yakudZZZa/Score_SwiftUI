@@ -20,13 +20,3 @@ struct Player: Identifiable {
     var score: Int
     var selectedColorIndex: Int
 }
-
-
-
-//let testData = [
-//    Player(backgroundColor: colors.randomElement()!),
-//    Player(name: "Александра", backgroundColor: colors.randomElement()!),
-//    Player(name: "Евгений", backgroundColor: colors.randomElement()!),
-//    Player(name: "Алиса", backgroundColor: colors.randomElement()!),
-//    Player(name: "Сергей", backgroundColor: colors.randomElement()!)
-//]

@@ -19,10 +19,8 @@ struct ContentView: View {
                 NavigationView {
                     List {
                         ForEach (playerStore.players) { player in
-//                            VStack(spacing: 0.0) {
-                                PlayerCell(player: player)
-//                            }
-                            .listRowInsets(EdgeInsets())
+                            PlayerCell(player: player)
+                                .listRowInsets(EdgeInsets())
                         }
                         .onDelete(perform: deletePlayer)
                         .buttonStyle(BorderlessButtonStyle())
@@ -67,13 +65,11 @@ struct ContentView: View {
         UINavigationBar.appearance().tintColor = .clear
         UINavigationBar.appearance().backgroundColor = .clear
         UITabBar.appearance().barTintColor = UIColor.barColor
-        //    UINavigationBar.appearance().backgroundColor = UIColor(red: 28/255, green: 28/255, blue: 28/255, alpha: 0.9)
         UITableView.appearance().backgroundColor = .clear
         UITableViewCell.appearance().backgroundColor = .clear
         UITableView.appearance().separatorStyle = .none
         UINavigationBar.appearance().barTintColor = UIColor.barColor
         UINavigationBar.appearance().isTranslucent = false
-        //For other NavigationBar changes, look here:(https://stackoverflow.com/a/57509555/5623035)
         self.playerStore = playerStore
     }
     

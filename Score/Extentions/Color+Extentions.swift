@@ -8,9 +8,9 @@
 import SwiftUI
 
 extension Color {
-  static var mainBackgroundColor: Color {
-    Color("mainBackgroundColor")
-  }
+    static var mainBackgroundColor: Color {
+        Color("mainBackgroundColor")
+    }
 }
 
 extension UIColor {
