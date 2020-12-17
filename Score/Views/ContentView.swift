@@ -14,20 +14,21 @@ struct ContentView: View {
     var body: some View {
         
         ZStack {
-            Color(red: 37/255, green: 37/255, blue: 37/255).edgesIgnoringSafeArea(.all)
+            Color.mainBackgroundColor.edgesIgnoringSafeArea(.all)
             TabView(selection: $selectedTab) {
                 NavigationView {
                     List {
                         ForEach (playerStore.players) { player in
-                            VStack(spacing: 0.0) {
+//                            VStack(spacing: 0.0) {
                                 PlayerCell(player: player)
-                            }
+//                            }
                             .listRowInsets(EdgeInsets())
                         }
                         .onDelete(perform: deletePlayer)
                         .buttonStyle(BorderlessButtonStyle())
+                        .listRowBackground(Color.clear)
                     }
-                    .background(Color(red: 37/255, green: 37/255, blue: 37/255))
+                    .background(Color.mainBackgroundColor)
                     .navigationBarTitle("", displayMode: .inline)
                     .navigationBarItems(
                         trailing:
@@ -65,11 +66,12 @@ struct ContentView: View {
         UINavigationBar.appearance().isTranslucent = true
         UINavigationBar.appearance().tintColor = .clear
         UINavigationBar.appearance().backgroundColor = .clear
-        UITabBar.appearance().barTintColor = UIColor(red: 28/255, green: 28/255, blue: 28/255, alpha: 0.9)
+        UITabBar.appearance().barTintColor = UIColor.barColor
         //    UINavigationBar.appearance().backgroundColor = UIColor(red: 28/255, green: 28/255, blue: 28/255, alpha: 0.9)
         UITableView.appearance().backgroundColor = .clear
+        UITableViewCell.appearance().backgroundColor = .clear
         UITableView.appearance().separatorStyle = .none
-        UINavigationBar.appearance().barTintColor = UIColor(red: 28/255, green: 28/255, blue: 28/255, alpha: 0.5)
+        UINavigationBar.appearance().barTintColor = UIColor.barColor
         UINavigationBar.appearance().isTranslucent = false
         //For other NavigationBar changes, look here:(https://stackoverflow.com/a/57509555/5623035)
         self.playerStore = playerStore

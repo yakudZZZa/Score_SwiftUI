@@ -10,6 +10,7 @@ import SwiftUI
 struct ColorsView: View {
     
     @Binding var selectedColorCell: Int
+    @Binding var height: CGFloat?
     
     var body: some View {
         
@@ -22,14 +23,14 @@ struct ColorsView: View {
                     }) {
                         ZStack{
                             Rectangle()
-                                .frame(height: 45)
-                                .foregroundColor(.clear)
+                                .frame(height: height)
+                                .foregroundColor(Color(colors[index]))
                             Circle()
                                 .frame(width: 10, height: 10)
                                 .foregroundColor(self.selectedColorCell == index ? Color.white : Color.clear)
                         }
                     }
-                    .background(Color(colors[index]))
+//                    .background(Color(colors[index]))
                 }
                 .animation(.default)
             }
@@ -95,8 +96,9 @@ struct ColorsViewTemp: View {
 
 struct ColorsView_Previews: PreviewProvider {
     @State static var selectedColorCell = 0
+    @State static var height: CGFloat? = 45
     static var previews: some View {
-        ColorsView(selectedColorCell: $selectedColorCell)
-        ColorsViewTemp(selectedColorCell: $selectedColorCell)
+        ColorsView(selectedColorCell: $selectedColorCell, height: $height)
+        //        ColorsViewTemp(selectedColorCell: $selectedColorCell)
     }
 }
