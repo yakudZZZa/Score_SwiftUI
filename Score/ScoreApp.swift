@@ -11,7 +11,8 @@ import SwiftUI
 struct ScoreApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView(playerStore: PlayerStore())
+            ContentView()
+                .environmentObject(PlayerStore())
         }
     }
 }

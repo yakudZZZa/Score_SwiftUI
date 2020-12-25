@@ -14,25 +14,21 @@ struct ColorsView: View {
     
     var body: some View {
         
-        ZStack {
-            HStack(spacing: 0.0){
-                ForEach(colors.indices) { index in
-                    Button(action: {
-                        print(index)
-                        self.selectedColorCell = index
-                    }) {
-                        ZStack{
-                            Rectangle()
-                                .frame(height: height)
-                                .foregroundColor(Color(colors[index]))
-                            Circle()
-                                .frame(width: 10, height: 10)
-                                .foregroundColor(self.selectedColorCell == index ? Color.white : Color.clear)
-                        }
-                    }
+        HStack(spacing: 0.0){
+            ForEach(colors.indices) { index in
+                ZStack{
+                    Rectangle()
+                        .frame(height: height)
+                        .foregroundColor(Color(colors[index]))
+                    Circle()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(self.selectedColorCell == index ? Color.white : Color.clear)
                 }
-                .animation(.default)
+                .onTapGesture {
+                    self.selectedColorCell = index
+                }
             }
+            .animation(.linear)
         }
     }
 }
@@ -42,5 +38,6 @@ struct ColorsView_Previews: PreviewProvider {
     @State static var height: CGFloat? = 45
     static var previews: some View {
         ColorsView(selectedColorCell: $selectedColorCell, height: $height)
+            .previewLayout(.sizeThatFits)
     }
 }

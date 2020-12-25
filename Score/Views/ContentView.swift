@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @ObservedObject var playerStore: PlayerStore
+    @EnvironmentObject var playerStore: PlayerStore
     @State var selectedTab = 0
     
     var body: some View {
@@ -18,13 +18,11 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 NavigationView {
                     List {
-                        ForEach (playerStore.players) { player in
-                            PlayerCell(player: player)
-                                .listRowInsets(EdgeInsets())
+                        ForEach (playerStore.players.indices) { playerIndex in
+                            PlayerCell(index: playerIndex)
                         }
                         .onDelete(perform: deletePlayer)
                         .buttonStyle(BorderlessButtonStyle())
-                        .listRowBackground(Color.clear)
                     }
                     .background(Color.mainBackgroundColor)
                     .navigationBarTitle("", displayMode: .inline)
@@ -35,21 +33,17 @@ struct ContentView: View {
                             .onTapGesture(perform: addPlayer)
                     )
                 }
-                .background(Color.clear)
                 .navigationViewStyle(StackNavigationViewStyle())
                 .tabItem {
-                    VStack {
-                        Image(systemName: "square.and.pencil")
-                            .resizable()
-                        
-                    }
+                    Image(systemName: "square.and.pencil")
+                        .resizable()
                 }.tag(0)
                 Text("Tab Content 2").tabItem {
                     Text("60")
                         .font(.title)
                 }.tag(1)
-                Text("Tab Content 2").tabItem {
-                    Image(systemName: "square.and.pencil")
+                Text("Tab Content 3").tabItem {
+                    Image(systemName: "gearshape")
                         .resizable()
                         .aspectRatio(contentMode: .fill)
                 }.tag(2)
@@ -58,7 +52,7 @@ struct ContentView: View {
         }
     }
     
-    init(playerStore: PlayerStore){
+    init(){
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().isTranslucent = true
@@ -66,16 +60,14 @@ struct ContentView: View {
         UINavigationBar.appearance().backgroundColor = .clear
         UITabBar.appearance().barTintColor = UIColor.barColor
         UITableView.appearance().backgroundColor = .clear
-        UITableViewCell.appearance().backgroundColor = .clear
         UITableView.appearance().separatorStyle = .none
         UINavigationBar.appearance().barTintColor = UIColor.barColor
         UINavigationBar.appearance().isTranslucent = false
-        self.playerStore = playerStore
     }
     
     func deletePlayer(offsets: IndexSet) {
         withAnimation {
-            playerStore.players.remove(atOffsets: offsets)
+            playerStore.deletePlayer(offsets: offsets)
         }
     }
     func addPlayer() {
@@ -87,6 +79,7 @@ struct ContentView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(playerStore: PlayerStore())
+        ContentView()
+            .environmentObject(PlayerStore())
     }
 }

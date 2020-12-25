@@ -20,6 +20,7 @@
 		09A76407258B98CC0027504B /* TestView2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A76405258B98CC0027504B /* TestView2.swift */; };
 		09A76408258B98CC0027504B /* TestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A76406258B98CC0027504B /* TestView.swift */; };
 		09C01EE2258B637C00CF509B /* Color+Extentions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C01EE1258B637C00CF509B /* Color+Extentions.swift */; };
+		09FE36F52593487800798414 /* TextFieldClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FE36F42593487800798414 /* TextFieldClearButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		09A76405258B98CC0027504B /* TestView2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestView2.swift; sourceTree = "<group>"; };
 		09A76406258B98CC0027504B /* TestView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestView.swift; sourceTree = "<group>"; };
 		09C01EE1258B637C00CF509B /* Color+Extentions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extentions.swift"; sourceTree = "<group>"; };
+		09FE36F42593487800798414 /* TextFieldClearButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldClearButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				092E3A48257A465A0044B424 /* ColorsView.swift */,
 				092E3A2F257A45FD0044B424 /* ContentView.swift */,
 				092E3A4B257A46730044B424 /* PlayerCell.swift */,
+				09FE36F42593487800798414 /* TextFieldClearButton.swift */,
 				09A76401258B96B30027504B /* ScoreButton.swift */,
 				09A763FE258B96550027504B /* TransparentDivider.swift */,
 				09A76406258B98CC0027504B /* TestView.swift */,
@@ -190,6 +193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				092E3A49257A465A0044B424 /* ColorsView.swift in Sources */,
+				09FE36F52593487800798414 /* TextFieldClearButton.swift in Sources */,
 				092E3A30257A45FD0044B424 /* ContentView.swift in Sources */,
 				09A76408258B98CC0027504B /* TestView.swift in Sources */,
 				092E3A4C257A46730044B424 /* PlayerCell.swift in Sources */,

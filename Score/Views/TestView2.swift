@@ -24,15 +24,23 @@ struct SubView: View {
     @State var change: Bool = false
 
     var body: some View {
-        Rectangle()
-            .frame(width: 200)
-            .modifier(AnimatingCellHeight(height: change ? 300 : 200))
-            .foregroundColor(Color.red)
-            .onTapGesture {
-                withAnimation {
-                    self.change.toggle()
+        VStack {
+            Rectangle()
+                .frame(width: 200)
+                .foregroundColor(Color.red)
+                .onTapGesture {
+                    withAnimation {
+                        self.change.toggle()
+                    }
                 }
+            if change {
+            Rectangle()
+                .frame(width: 200)
+                .foregroundColor(Color.blue)
+            }
         }
+        .modifier(AnimatingCellHeight(height: change ? 400 : 200))
+        .listRowBackground(Color.black)
     }
 }
 
@@ -43,6 +51,9 @@ struct TestView2: View {
             SubView()
             SubView()
         }
+        .background(Color.black)
+//        .listRowBackground(Color.black)
+        
     }
 }
 

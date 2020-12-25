@@ -8,17 +8,17 @@
 import SwiftUI
 
 struct ScoreButton: View {
-    var imageName: String
-    @Binding var player: Player
+    enum name {
+        case plus, minus
+    }
+    var imageName: name
+    @Binding var score: Int
     @Binding var height: CGFloat?
     var body: some View {
         Button(action: {
             switch imageName {
-            case "plus":
-                player.score += 1
-            case "minus":
-                player.score -= 1
-            default: break
+            case .plus: score += 1
+            case .minus: score -= 1
             }
         }, label: {
             Image(systemName: "\(imageName)")
@@ -30,10 +30,11 @@ struct ScoreButton: View {
 }
 
 struct ScoreButton_Previews: PreviewProvider {
-    @State static var player = Player(score: 0, selectedColorIndex: 1)
+    @State static var score = 0
     @State static var height: CGFloat? = 45
     static var previews: some View {
-        ScoreButton(imageName: "plus", player: $player, height: $height)
+        ScoreButton(imageName: .plus, score: $score, height: $height)
             .background(Color.black)
+            .previewLayout(.sizeThatFits)
     }
 }
