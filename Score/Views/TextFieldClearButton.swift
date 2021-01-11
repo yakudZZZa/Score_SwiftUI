@@ -13,11 +13,11 @@ struct TextFieldClearButton: ViewModifier {
     @Binding var isSelected: Bool
     
     public func body(content: Content) -> some View {
-        HStack {
+        ZStack(alignment: .trailing) {
             content
-            Spacer()
             Image(systemName: "multiply.circle.fill")
                 .foregroundColor(.init(white: 0.9))
+//                .frame(width: isSelected && !text.isEmpty ? 20 : 0)
                 .opacity(isSelected && !text.isEmpty ? 1 : 0)
                 .onTapGesture { self.text = "" }
         }

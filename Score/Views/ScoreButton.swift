@@ -20,11 +20,9 @@ struct ScoreButton: View {
         Button(action: {
             switch imageName {
             case .plus:
-                playerStore.players[index].score += 1
-                playerStore.save()
+                playerStore.increaseScoreByPlayerIndex(playerIndex: index)
             case .minus:
-                playerStore.players[index].score -= 1
-                playerStore.save()
+                playerStore.decreaseScoreByPlayerIndex(playerIndex: index)
             }
         }, label: {
             Image(systemName: "\(imageName)")

@@ -27,7 +27,7 @@ struct ColorsView: View {
                         .foregroundColor(self.selectedColorCell == colorIndex ? Color.white : Color.clear)
                 }
                 .onTapGesture {
-                    self.playerStore.players[index].selectedColorIndex = colorIndex
+                    self.playerStore.changeColorIndex(playerIndex: index, newColorIndex: colorIndex)
                 }
             }
             .animation(.linear)
@@ -35,11 +35,11 @@ struct ColorsView: View {
     }
 }
 
-//struct ColorsView_Previews: PreviewProvider {
-//    @State static var selectedColorCell = 0
-//    @State static var height: CGFloat? = 45
-//    static var previews: some View {
-//        ColorsView(selectedColorCell: $selectedColorCell, height: $height)
-//            .previewLayout(.sizeThatFits)
-//    }
-//}
+struct ColorsView_Previews: PreviewProvider {
+    @State static var selectedColorCell = 0
+    @State static var height: CGFloat? = 45
+    static var previews: some View {
+        ColorsView(selectedColorCell: $selectedColorCell, height: $height, index: 0)
+            .previewLayout(.sizeThatFits)
+    }
+}

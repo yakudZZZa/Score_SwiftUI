@@ -16,7 +16,7 @@ struct AnimatingCellHeight: AnimatableModifier {
     }
     
     func body(content: Content) -> some View {
-        content.frame(height: height)
+        content.frame(height: height, alignment: .top)
     }
 }
 
@@ -38,20 +38,21 @@ struct PlayerCell: View {
     
     var body: some View {
         VStack(spacing: 0) {
-            HStack{
+            HStack(spacing: 0.0){
                 TextField("Input Name",
                           text: $name)
                 { (selected) in
-                    withAnimation(.linear) {
+//                    withAnimation(.default) {
                         isSelected = selected
-                    }
+//                    }
                 } onCommit: {
-                    self.playerStore.players[index].name = self.name
+                    self.playerStore.changeNameByPlayerIndex(playerIndex: index, newName: name)
                 }
                 .disableAutocorrection(true)
                 .autocapitalization(.words)
                 .foregroundColor(.white)
-                .padding()
+                .padding(.vertical)
+                .padding(.leading)
                 .background(
                     GeometryReader { proxy in
                         Color.clear.preference(key: SizeKey.self, value: proxy.size
@@ -83,34 +84,39 @@ struct PlayerCell: View {
             }
             .frame(height: height)
             .background(backgroundColor)
-            .animation(.linear)
+//            .animation(.linear)
             .onPreferenceChange(SizeKey.self) { size in
                 self.height = size?.height
             }
             
-            if isSelected {
+//            if isSelected {
                 ColorsView(
                     selectedColorCell: $selectedColorIndex,
                     height: $height,
                     index: index
                 )
-//                .zIndex(-1)
+                .zIndex(-10)
+                .offset(y: isSelected ? 0 : -(height ?? 0))
+                .opacity(isSelected ? 1 : 0)
+//                .frame(height: isSelected ? height : 0)
 //                .transition(
 //                    .offset(y: -(height!))
 //                )
-            }
+//            }
         }
         .listRowInsets(EdgeInsets())
         .listRowBackground(Color.mainBackgroundColor)
         .modifier(AnimatingCellHeight(height: isSelected ? 2 * height! : height ))
+//        .animation(.linear)
     }
 }
 
-//struct PlayerCellPart_Previews: PreviewProvider {
-//    @State static var player = PlayerStore().players[3]
-//    static var previews: some View {
-//        PlayerCell(index: 3)
-//            .environmentObject(PlayerStore())
-//            .previewLayout(.sizeThatFits)
-//    }
-//}
+struct PlayerCellPart_Previews: PreviewProvider {
+    static let playerStore = PlayerStore()
+    static var index = 2
+    static var previews: some View {
+        PlayerCell(index: index, name: playerStore.players[index].name, score: playerStore.players[index].score, selectedColorIndex: playerStore.players[index].selectedColorIndex, backgroundColor: playerStore.players[index].backgroundColor)
+            .environmentObject(PlayerStore())
+            .previewLayout(.sizeThatFits)
+    }
+}

@@ -83,6 +83,26 @@ class PlayerStore: ObservableObject {
         save()
     }
     
+    func increaseScoreByPlayerIndex(playerIndex: Int) {
+        players[playerIndex].score += 1
+        save()
+    }
+    
+    func decreaseScoreByPlayerIndex(playerIndex: Int) {
+        players[playerIndex].score -= 1
+        save()
+    }
+    
+    func changeColorIndex(playerIndex: Int, newColorIndex: Int) {
+        players[playerIndex].selectedColorIndex = newColorIndex
+        save()
+    }
+    
+    func changeNameByPlayerIndex(playerIndex: Int, newName: String) {
+        players[playerIndex].name = newName
+        save()
+    }
+    
     func update() {
         self.objectWillChange.send()
     }
