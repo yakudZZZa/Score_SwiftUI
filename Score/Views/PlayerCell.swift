@@ -29,6 +29,10 @@ struct PlayerCell: View {
         }
     }
     var index: Int
+    @State var name: String
+    @State var score: Int
+    @State var selectedColorIndex: Int
+    @State var backgroundColor: Color
     @State var isSelected = false
     @State private var height: CGFloat?
     
@@ -36,13 +40,13 @@ struct PlayerCell: View {
         VStack(spacing: 0) {
             HStack{
                 TextField("Input Name",
-                          text: playerStore.bindingName(for: index))
+                          text: $name)
                 { (selected) in
                     withAnimation(.linear) {
                         isSelected = selected
                     }
                 } onCommit: {
-                    
+                    self.playerStore.players[index].name = self.name
                 }
                 .disableAutocorrection(true)
                 .autocapitalization(.words)
@@ -54,29 +58,31 @@ struct PlayerCell: View {
                         )
                     }
                 )
-                .modifier(TextFieldClearButton(text: playerStore.bindingName(for: index), isSelected: $isSelected))
-                
+                .modifier(TextFieldClearButton(
+                    text: $name,
+                    isSelected: $isSelected
+                ))
                 HStack(spacing: 0) {
                     ScoreButton(
                         imageName: .minus,
-                        score: playerStore.bindingScore(for: index),
+                        index: index,
                         height: $height
                     )
                     
-                    Text("\(playerStore.bindingScore(for: index).wrappedValue)")
+                    Text("\(score)")
                         .foregroundColor(.white)
                         .frame(height: height)
                         .frame(minWidth: 56)
                     
                     ScoreButton(
                         imageName: .plus,
-                        score: playerStore.bindingScore(for: index),
+                        index: index,
                         height: $height
                     )
                 }
             }
             .frame(height: height)
-            .background(playerStore.players[index].backgroundColor)
+            .background(backgroundColor)
             .animation(.linear)
             .onPreferenceChange(SizeKey.self) { size in
                 self.height = size?.height
@@ -84,8 +90,9 @@ struct PlayerCell: View {
             
             if isSelected {
                 ColorsView(
-                    selectedColorCell: playerStore.bindingColor(for: index),
-                    height: $height
+                    selectedColorCell: $selectedColorIndex,
+                    height: $height,
+                    index: index
                 )
 //                .zIndex(-1)
 //                .transition(
@@ -99,11 +106,11 @@ struct PlayerCell: View {
     }
 }
 
-struct PlayerCellPart_Previews: PreviewProvider {
-    @State static var player = PlayerStore().players[3]
-    static var previews: some View {
-        PlayerCell(index: 3)
-            .environmentObject(PlayerStore())
-            .previewLayout(.sizeThatFits)
-    }
-}
+//struct PlayerCellPart_Previews: PreviewProvider {
+//    @State static var player = PlayerStore().players[3]
+//    static var previews: some View {
+//        PlayerCell(index: 3)
+//            .environmentObject(PlayerStore())
+//            .previewLayout(.sizeThatFits)
+//    }
+//}

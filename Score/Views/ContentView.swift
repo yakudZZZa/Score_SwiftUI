@@ -18,10 +18,17 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 NavigationView {
                     List {
-                        ForEach (playerStore.players.indices) { playerIndex in
-                            PlayerCell(index: playerIndex)
+                        ForEach (playerStore.players, id: \.self) { player in
+                            PlayerCell(
+                                index: playerStore.getIndex(of: player),
+                                name: player.name,
+                                score: player.score,
+                                selectedColorIndex: player.selectedColorIndex,
+                                backgroundColor: player.backgroundColor
+                            )
                         }
-                        .onDelete(perform: deletePlayer)
+                        .onDelete(perform: self.deletePlayer)
+                        .onMove(perform: playerStore.move)
                         .buttonStyle(BorderlessButtonStyle())
                     }
                     .background(Color.mainBackgroundColor)
@@ -30,7 +37,7 @@ struct ContentView: View {
                         trailing:
                             Image(systemName: "person.crop.circle.badge.plus")
                             .foregroundColor(.white)
-                            .onTapGesture(perform: addPlayer)
+                            .onTapGesture(perform: self.addNewPlayer)
                     )
                 }
                 .navigationViewStyle(StackNavigationViewStyle())
@@ -70,7 +77,8 @@ struct ContentView: View {
             playerStore.deletePlayer(offsets: offsets)
         }
     }
-    func addPlayer() {
+    
+    func addNewPlayer() {
         withAnimation {
             playerStore.addNewPlayer()
         }

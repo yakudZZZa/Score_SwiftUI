@@ -13,24 +13,33 @@ class PlayerStore: ObservableObject {
     
     private static let saveKey = "SavedData"
     var choosedColorsIndexes: [Int] = colors.indices.map{ $0 }
-    
-    @Published var players: [Player]
+    @Published var players: [Player] = []
     
     init() {
-        
-        if let data = UserDefaults.standard.data(forKey: Self.saveKey) {
-            if let decoded = try? JSONDecoder().decode([Player].self, from: data) {
-                self.players = decoded
-                return
+        if players.isEmpty {
+            self.load()
+            if players.isEmpty {
+                self.setPlayers()
             }
         }
-        self.players = []
-        self.setPlayers()
+    }
+    
+    func getIndex(of player: Player) -> Int {
+        return self.players.firstIndex(where: {$0.id == player.id})!
     }
     
     func save() {
         if let encoded = try? JSONEncoder().encode(players) {
             UserDefaults.standard.set(encoded, forKey: Self.saveKey)
+            print("Data saved")
+        }
+    }
+    
+    func load() {
+        if let data = UserDefaults.standard.data(forKey: Self.saveKey) {
+            if let decoded = try? JSONDecoder().decode([Player].self, from: data) {
+                self.players = decoded
+            }
         }
     }
     
@@ -52,43 +61,31 @@ class PlayerStore: ObservableObject {
         self.players.append(Player(name: "Сергей", score: 0, selectedColorIndex: chooseRandomColorIndex()))
     }
     
-    func bindingName(for index: Int) -> Binding<String> {
-        Binding(
-            get: { self.players[index].name },
-            set: { newName in
-                self.players[index].name = newName.trimmingCharacters(in: .whitespacesAndNewlines)
-                self.save()
-            }
-        )
-    }
-    
-    func bindingScore(for index: Int) -> Binding<Int> {
-        Binding(
-            get: { self.players[index].score },
-            set: { newScore in
-                self.players[index].score = newScore
-                self.save()
-            }
-        )
-    }
-    
-    func bindingColor(for index: Int) -> Binding<Int> {
-        Binding(
-            get: { self.players[index].selectedColorIndex },
-            set: { newColorIndex in
-                self.players[index].selectedColorIndex = newColorIndex
-                self.save()
-            }
-        )
+    func getBackgroundColor(id: UUID) -> Color {
+        return self.players[self.players.firstIndex(where: {$0.id == id})!].backgroundColor
     }
     
     func addNewPlayer() {
-        self.players.append(Player(score: 0, selectedColorIndex: chooseRandomColorIndex()))
+        self.players.append(Player(name: "Player \(self.players.count + 1)", score: 0, selectedColorIndex: chooseRandomColorIndex()))
         save()
+        print("saved after add player")
     }
     
     func deletePlayer(offsets: IndexSet) {
         self.players.remove(atOffsets: offsets)
         save()
+        print("saved after delete")
+        print(players)
     }
+    
+    func move(fromOffsets: IndexSet, toOffset: Int) {
+        self.players.move(fromOffsets: fromOffsets, toOffset: toOffset)
+        save()
+    }
+    
+    func update() {
+        self.objectWillChange.send()
+    }
+    
+    
 }
