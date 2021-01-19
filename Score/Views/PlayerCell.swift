@@ -28,25 +28,24 @@ struct PlayerCell: View {
             value = value ?? nextValue()
         }
     }
-    var index: Int
-    @State var name: String
-    @State var score: Int
-    @State var selectedColorIndex: Int
-    @State var backgroundColor: Color
+    @ObservedObject var player: Player
+//    var playerIndex: Int {
+//        return playerStore.players.firstIndex(where: {$0.id == player.id})!
+//    }
     @State var isSelected = false
     @State private var height: CGFloat?
     
     var body: some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 0.0) {
             HStack(spacing: 0.0){
                 TextField("Input Name",
-                          text: $name)
+                          text: $player.name)
                 { (selected) in
 //                    withAnimation(.default) {
                         isSelected = selected
 //                    }
                 } onCommit: {
-                    self.playerStore.changeNameByPlayerIndex(playerIndex: index, newName: name)
+//                    playerStore.save()
                 }
                 .disableAutocorrection(true)
                 .autocapitalization(.words)
@@ -60,50 +59,50 @@ struct PlayerCell: View {
                     }
                 )
                 .modifier(TextFieldClearButton(
-                    text: $name,
+                    text: $player.name,
                     isSelected: $isSelected
                 ))
                 HStack(spacing: 0) {
                     ScoreButton(
                         imageName: .minus,
-                        index: index,
+                        score: $player.score,
                         height: $height
                     )
                     
-                    Text("\(score)")
+                    Text("\($player.score.wrappedValue)")
                         .foregroundColor(.white)
                         .frame(height: height)
                         .frame(minWidth: 56)
                     
                     ScoreButton(
                         imageName: .plus,
-                        index: index,
+                        score: $player.score,
                         height: $height
                     )
                 }
             }
             .frame(height: height)
-            .background(backgroundColor)
+            .background(player.backgroundColor)
 //            .animation(.linear)
             .onPreferenceChange(SizeKey.self) { size in
                 self.height = size?.height
             }
             
 //            if isSelected {
-                ColorsView(
-                    selectedColorCell: $selectedColorIndex,
-                    height: $height,
-                    index: index
-                )
-                .zIndex(-10)
-                .offset(y: isSelected ? 0 : -(height ?? 0))
-                .opacity(isSelected ? 1 : 0)
+//                ColorsView(
+//                    selectedColorIndex: $player.selectedColorIndex,
+//                    height: $height
+//                )
+//                .zIndex(-10)
+//                .offset(y: isSelected ? 0 : -(height ?? 0))
+//                .opacity(isSelected ? 1 : 0)
 //                .frame(height: isSelected ? height : 0)
 //                .transition(
 //                    .offset(y: -(height!))
 //                )
 //            }
         }
+        .id(player.id)
         .listRowInsets(EdgeInsets())
         .listRowBackground(Color.mainBackgroundColor)
         .modifier(AnimatingCellHeight(height: isSelected ? 2 * height! : height ))
@@ -112,11 +111,101 @@ struct PlayerCell: View {
 }
 
 struct PlayerCellPart_Previews: PreviewProvider {
-    static let playerStore = PlayerStore()
-    static var index = 2
+    @State static var player = Player(name: "Евгений", score: 12, selectedColorIndex: 3)
     static var previews: some View {
-        PlayerCell(index: index, name: playerStore.players[index].name, score: playerStore.players[index].score, selectedColorIndex: playerStore.players[index].selectedColorIndex, backgroundColor: playerStore.players[index].backgroundColor)
+        PlayerCell1(player: player)
             .environmentObject(PlayerStore())
             .previewLayout(.sizeThatFits)
+    }
+}
+
+struct PlayerCell1: View {
+    @EnvironmentObject var playerStore: PlayerStore
+    
+    private struct SizeKey: PreferenceKey {
+        static func reduce(value: inout CGSize?, nextValue: () -> CGSize?) {
+            value = value ?? nextValue()
+        }
+    }
+    @ObservedObject var player: Player
+//    var playerIndex: Int {
+//        return playerStore.players.firstIndex(where: {$0.id == player.id})!
+//    }
+    @State var isSelected = false
+//    @State private var height: CGFloat?
+    @State private var height: CGFloat? = 45
+    
+    var body: some View {
+        VStack(spacing: 0.0) {
+            HStack(spacing: 0.0){
+                TextField("Input Name",
+                          text: $player.name)
+                { (selected) in
+//                    withAnimation(.linear) {
+                        isSelected = selected
+//                    }
+                } onCommit: {
+//                    playerStore.save()
+                }
+                .disableAutocorrection(true)
+                .autocapitalization(.words)
+                .foregroundColor(.white)
+                .padding(.vertical)
+                .padding(.leading)
+                .background(
+                    GeometryReader { proxy in
+                        Color.clear.preference(key: SizeKey.self, value: proxy.size
+                        )
+                    }
+                )
+                .modifier(TextFieldClearButton(
+                    text: $player.name,
+                    isSelected: $isSelected
+                ))
+                HStack(spacing: 0) {
+                    ScoreButton(
+                        imageName: .minus,
+                        score: $player.score,
+                        height: $height
+                    )
+                    
+                    Text("\($player.score.wrappedValue)")
+                        .foregroundColor(.white)
+                        .frame(height: height)
+                        .frame(minWidth: 56)
+                    
+                    ScoreButton(
+                        imageName: .plus,
+                        score: $player.score,
+                        height: $height
+                    )
+                }
+            }
+//            .frame(height: height)
+            .background(player.backgroundColor)
+//            .animation(.linear)
+//            .onPreferenceChange(SizeKey.self) { size in
+//                self.height = size?.height
+//            }
+            
+            if isSelected {
+                ColorsView(
+                    selectedColorIndex: $player.selectedColorIndex,
+                    height: $height
+                )
+//                .zIndex(-10)
+//                .offset(y: isSelected ? 0 : -(height ?? 0))
+//                .opacity(isSelected ? 1 : 0)
+//                .frame(height: isSelected ? height : 0)
+//                .transition(
+//                    .offset(y: -(height!))
+//                )
+            }
+        }
+        .id(player.id)
+        .listRowInsets(EdgeInsets())
+        .listRowBackground(Color.clear)
+//        .modifier(AnimatingCellHeight(height: isSelected ? 2 * height! : height ))
+//        .animation(.default)
     }
 }

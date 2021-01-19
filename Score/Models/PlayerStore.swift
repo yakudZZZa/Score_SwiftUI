@@ -67,40 +67,59 @@ class PlayerStore: ObservableObject {
     
     func addNewPlayer() {
         self.players.append(Player(name: "Player \(self.players.count + 1)", score: 0, selectedColorIndex: chooseRandomColorIndex()))
-        save()
+//        save()
         print("saved after add player")
+        print(players.map{$0.name})
     }
     
     func deletePlayer(offsets: IndexSet) {
         self.players.remove(atOffsets: offsets)
-        save()
-        print("saved after delete")
-        print(players)
+//        save()
+//        print("saved after delete")
+//        print(players.map{$0.name})
     }
     
     func move(fromOffsets: IndexSet, toOffset: Int) {
         self.players.move(fromOffsets: fromOffsets, toOffset: toOffset)
-        save()
+//        save()
     }
     
     func increaseScoreByPlayerIndex(playerIndex: Int) {
         players[playerIndex].score += 1
-        save()
+//        save()
     }
     
     func decreaseScoreByPlayerIndex(playerIndex: Int) {
         players[playerIndex].score -= 1
-        save()
+//        save()
+    }
+    
+    func increaseScore(player: Player) {
+        let index = getIndex(of: player)
+        players[index].score += 1
+//        save()
+    }
+    
+    func decreaseScore(player: Player) {
+        let index = getIndex(of: player)
+        players[index].score -= 1
+//        save()
     }
     
     func changeColorIndex(playerIndex: Int, newColorIndex: Int) {
         players[playerIndex].selectedColorIndex = newColorIndex
-        save()
+//        save()
     }
     
     func changeNameByPlayerIndex(playerIndex: Int, newName: String) {
         players[playerIndex].name = newName
-        save()
+//        save()
+    }
+    
+    func changePlayerName(player: Player, newName: String) {
+        let index = getIndex(of: player)
+        players[index].name = newName
+//        save()
     }
     
     func update() {

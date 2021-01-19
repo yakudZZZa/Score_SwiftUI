@@ -13,16 +13,19 @@ struct ScoreButton: View {
         case plus, minus
     }
     var imageName: name
-    var index: Int
-//    @Binding var score: Int
+//    var index: Int
+//    @Binding var player: Player
+    @Binding var score: Int
     @Binding var height: CGFloat?
     var body: some View {
         Button(action: {
             switch imageName {
             case .plus:
-                playerStore.increaseScoreByPlayerIndex(playerIndex: index)
+                score += 1
+//                playerStore.increaseScore(player: player)
             case .minus:
-                playerStore.decreaseScoreByPlayerIndex(playerIndex: index)
+                score -= 1
+//                playerStore.decreaseScore(player: player)
             }
         }, label: {
             Image(systemName: "\(imageName)")

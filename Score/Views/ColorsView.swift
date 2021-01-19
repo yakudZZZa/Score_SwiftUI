@@ -8,11 +8,12 @@
 import SwiftUI
 
 struct ColorsView: View {
-    @EnvironmentObject var playerStore: PlayerStore
+//    @EnvironmentObject var playerStore: PlayerStore
     
-    @Binding var selectedColorCell: Int
+//    @Binding var player: Player
+    @Binding var selectedColorIndex: Int
     @Binding var height: CGFloat?
-    var index: Int
+//    var index: Int
     
     var body: some View {
         
@@ -24,10 +25,11 @@ struct ColorsView: View {
                         .foregroundColor(Color(colors[colorIndex]))
                     Circle()
                         .frame(width: 10, height: 10)
-                        .foregroundColor(self.selectedColorCell == colorIndex ? Color.white : Color.clear)
+                        .foregroundColor(self.selectedColorIndex == colorIndex ? Color.white : Color.clear)
                 }
                 .onTapGesture {
-                    self.playerStore.changeColorIndex(playerIndex: index, newColorIndex: colorIndex)
+                    selectedColorIndex = colorIndex
+                    //                    playerStore.save()
                 }
             }
             .animation(.linear)
@@ -36,10 +38,11 @@ struct ColorsView: View {
 }
 
 struct ColorsView_Previews: PreviewProvider {
-    @State static var selectedColorCell = 0
+    @State static var player = Player(score: 0, selectedColorIndex: 2)
+    @State static var selectedColorIndex = 2
     @State static var height: CGFloat? = 45
     static var previews: some View {
-        ColorsView(selectedColorCell: $selectedColorCell, height: $height, index: 0)
+        ColorsView(selectedColorIndex: $selectedColorIndex, height: $height)
             .previewLayout(.sizeThatFits)
     }
 }

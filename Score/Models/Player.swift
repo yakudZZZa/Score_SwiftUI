@@ -7,18 +7,50 @@
 
 import SwiftUI
 
-import SwiftUI
-
 public let colors: [CGColor] = [#colorLiteral(red: 0.09019607843, green: 0.5176470588, blue: 0.262745098, alpha: 1),#colorLiteral(red: 0, green: 0.537254902, blue: 0.5058823529, alpha: 1),#colorLiteral(red: 0.2431372549, green: 0.5176470588, blue: 0.8039215686, alpha: 1),#colorLiteral(red: 0.3254901961, green: 0.3843137255, blue: 0.9254901961, alpha: 1),#colorLiteral(red: 0.6156862745, green: 0.2392156863, blue: 0.7137254902, alpha: 1),#colorLiteral(red: 0.7294117647, green: 0.1764705882, blue: 0.3607843137, alpha: 1),#colorLiteral(red: 0.8235294118, green: 0.2352941176, blue: 0.2352941176, alpha: 1),#colorLiteral(red: 0.8470588235, green: 0.4156862745, blue: 0.2274509804, alpha: 1),#colorLiteral(red: 0.9137254902, green: 0.6078431373, blue: 0.01960784314, alpha: 1),#colorLiteral(red: 0.4039215686, green: 0.4039215686, blue: 0.4039215686, alpha: 1)]
 
-struct Player: Identifiable, Codable, Hashable {
+class Player: ObservableObject, Identifiable, Codable {
+    enum CodingKeys: CodingKey {
+        case id, name, score, selectedColorIndex
+    }
+    static func == (lhs: Player, rhs: Player) -> Bool {
+        return lhs.id == rhs.id
+    }
     
-    var id = UUID()
-    var name: String = ""
+    @Published var id = UUID()
+    @Published var name: String = ""
     var backgroundColor: Color {
         return Color(colors[selectedColorIndex])
     }
-    var score: Int
-    var selectedColorIndex: Int
+    @Published var score: Int
+    @Published var selectedColorIndex: Int
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        score = try container.decode(Int.self, forKey: .score)
+        selectedColorIndex = try container.decode(Int.self, forKey: .selectedColorIndex)
+    }
+    
+    init(score: Int, selectedColorIndex: Int) {
+        self.score = score
+        self.selectedColorIndex = selectedColorIndex
+    }
+    
+    init(name: String, score: Int, selectedColorIndex: Int) {
+        self.name = name
+        self.score = score
+        self.selectedColorIndex = selectedColorIndex
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(score, forKey: .score)
+        try container.encode(selectedColorIndex, forKey: .selectedColorIndex)
+    }
+
 }
 

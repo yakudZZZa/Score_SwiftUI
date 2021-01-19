@@ -18,13 +18,9 @@ struct ContentView: View {
             TabView(selection: $selectedTab) {
                 NavigationView {
                     List {
-                        ForEach (playerStore.players, id: \.self) { player in
-                            PlayerCell(
-                                index: playerStore.getIndex(of: player),
-                                name: player.name,
-                                score: player.score,
-                                selectedColorIndex: player.selectedColorIndex,
-                                backgroundColor: player.backgroundColor
+                        ForEach (playerStore.players) { player in
+                            PlayerCell1(
+                                player: player
                             )
                         }
                         .onDelete(perform: self.deletePlayer)
@@ -68,8 +64,18 @@ struct ContentView: View {
         UITabBar.appearance().barTintColor = UIColor.barColor
         UITableView.appearance().backgroundColor = .clear
         UITableView.appearance().separatorStyle = .none
+        UITableViewCell.appearance().backgroundColor = .clear
         UINavigationBar.appearance().barTintColor = UIColor.barColor
         UINavigationBar.appearance().isTranslucent = false
+        
+    }
+    
+    func makeBinding(player: Player) -> Binding<Player> {
+        let index = self.playerStore.getIndex(of: player)
+        return .init(
+            get: { self.playerStore.players[index] },
+            set: { self.playerStore.players[index] = $0 }
+        )
     }
     
     func deletePlayer(offsets: IndexSet) {
